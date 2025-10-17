@@ -34,7 +34,7 @@ const User = require("./models/user.js");
 //require Review Module 
 const Review =require("./models/review.js");
 const ExpressError = require("./utils/ExpressError.js");
-let mongo_URL = "mongodb://127.0.0.1:27017/wanderlust";
+let mongo_URL = process.env.DATABASE_URL;
 
 //require listings routes 
 const listingRouter = require("./routes/listing.js");                            
@@ -67,7 +67,7 @@ app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname , "/public")));
 
 const sessionOptions = {
-   secret : "mysupersecretorder",
+   secret : process.env.sessionOPTIONS_SECRET_CODE,
    resave : false,
   saveUninitialized : true,
    cookie :{
