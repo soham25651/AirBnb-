@@ -1,0 +1,124 @@
+body{
+font-family: "Plus Jakarta Sans", sans-serif  !important;
+display: flex;
+flex-direction: column;
+
+}
+
+.container{
+ flex: 1;
+}
+ .navbar{
+         height: 5rem;
+        background-color: white;
+ }
+
+ .fa-compass{
+    color: #fe424d;
+    font-size: 2rem;
+ }
+
+ .nav-link{
+      color: #222222 !important;
+      /* !important in any case not make override */
+ }
+ .f-info-links a{
+       text-decoration: none;
+       color: black;
+ }
+
+ .f-info-links a:hover{
+  text-decoration: underline; 
+}
+
+ .f-info-links ,
+ .f-info-socials,
+ .f-info-brand{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ }
+
+ .f-info-socials i{
+   font-size: 1.2rem;
+   margin-right: 1rem;
+
+ }
+
+.f-info{
+    text-align: center;
+    height: 8rem;
+    background-color: #ebebeb;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: space-evenly;
+}
+
+/* Cards */
+.listing-card{
+border: none !important;  
+ margin-bottom: 2rem;
+}
+.card-img-top{
+
+ border-radius: 1rem !important;
+
+  object-fit: cover !important;   
+}
+.card-body{
+ padding: 0;
+}
+.card-text p{
+   font-weight: 400;
+   
+}
+
+/* listing-link is image that wise we not want any text decoration */
+.listing-link{
+  text-decoration: none;
+
+}
+
+/* Card Effect Go on Bootstrap*/
+.card-img-overlay{
+  opacity: 0;
+ 
+}
+.card-img-overlay:hover{
+  opacity: 0.2;
+  background: white;
+}
+
+.add-btn{
+   background-color: #fe424d;
+   border: none !important;
+}
+/* Edit Page  */
+.edit-btn{
+  background-color: #fe424d;
+   border: none !important;
+}
+
+/* Show page  */
+
+.show-img{
+  height: 30vh;
+
+}
+.btns{
+  display: flex;
+}
+.show-card{
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#map{
+    width: 80%;            /* full width of parent */
+  height:300px;          /* fixed height */
+  border-radius: 1rem; 
+  text-align: center;
+
+}

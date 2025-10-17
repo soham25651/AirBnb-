@@ -1,0 +1,113 @@
+<% layout("layouts/boilerplate") %>
+
+    <body>
+        <div class="row">
+
+            <div class="col-8 offset-2">
+          <br><br>      
+        <h3>Creating a New Listing</h3>
+
+        
+        <form method="POST" action="/listings" novalidate  class="needs-validation" enctype="multipart/form-data">
+            <div class="mb-3">
+
+                <label for="title" class="form-label">Title</label>
+                <!-- listing[title]  title key of listing object for each sequence wise related to  req.body.listing;   -->
+                     <input type="text" 
+                     name="listing[title]"
+                      placeholder="Add a catchy title"
+                       class="form-control" 
+                        required>
+                            <!-- success -->
+                           <div class="invalid-feedback">Suitable Title</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                    <textarea rows="3" 
+                    cols="40" 
+                     name="listing[description]" 
+                     class="form-control" required></textarea>
+                    <!-- failure -->
+                    <div class="invalid-feedback">please enter short Description</div>
+            </div>
+
+
+<!-- image -->
+         <div class="mb-3">
+                <label for="image" class="form-label">Image URL</label>
+                   <input type="text" 
+                   class="form-control" 
+                   name="listing[image][url]" 
+                   placeholder="enter image URL/Link">
+            </div>
+<!-- image in file upload -->
+              <div class="mb-3">
+                <label for="image" class="form-label">Upload Image</label>
+                   <input type="file" 
+                   class="form-control" 
+                   name="listing[image][url]" >
+                   required
+                   
+            </div>
+
+
+
+             <div class="row">
+                 <div class="mb-3 col-sm-5  col-md-12 col-lg-4">
+                <label for="price" class="form-label">Price</label>
+                   <input name="listing[price]" 
+                   class="form-control" 
+                   placeholder="1200" 
+                   type="number"
+                   required>
+                     <div class="invalid-feedback">please enter Price</div>
+            </div>
+
+
+      <div class="mb-3 col-sm-5 col-lg-8  col-md-12">
+                     <label for="country" class="form-label">Country</label>
+                         <input type="text" 
+                         class="form-control" 
+                         name="listing[country]" 
+                         placeholder="India"
+                         required>
+                            <div class="invalid-feedback">please enter Country name</div>
+
+            </div>
+             </div>
+       
+
+
+            <div class="mb-3">
+                <label for="location" class="form-label">Location</label>
+                        <input type="text" 
+                        class="form-control"
+                         name="listing[location]"
+                          placeholder="Jaipur , Rajshthan"
+                          required>
+                          <div class="invalid-feedback">please </div>
+
+            </div>
+
+            <div class="mb-3">
+                <label for="category" class="form-label">Category</label>
+                        <input type="text" 
+                        class="form-control"
+                         name="listing[category]"
+                          placeholder="Rooms ,Mountains , Pools , Boats"; 
+                          required>
+                          <div class="invalid-feedback">Enter proper category</div>
+            
+            </div>
+
+
+
+            <br> <br>
+            <button class="btn btn-dark add-btn">ADD</button>
+            <br><br><br>
+        </form>
+      </div>
+    </div>
+     
+</body>

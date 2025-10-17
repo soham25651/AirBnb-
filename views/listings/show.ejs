@@ -1,0 +1,138 @@
+<% layout("layouts/boilerplate") %>
+
+<body>
+  <div class="row mt-4">
+    <div class="col-8 offset-2">
+      <h3><%= listing.title %></h3>
+    </div>
+
+    <div class="card col-6 offset-2 show-card listing-card">
+      <img src="<%= listing.image.url %>" class="card-img-top show-img mb-3" alt="listing_image">
+      <div class="card-body">
+        <p class="card-text mb-1">Owned by <%= listing.owner.username %></p>
+        <br>
+        <p class="card-text mb-2"><%= listing.description %></p>
+        <br>
+        <p class="card-text mb-0">&#8377;<%= listing.price.toLocaleString("en-IN") %></p><br>
+        <p class="card-text mb-0"><%= listing.location %></p><br>
+        <p class="card-text mb-0"><%= listing.country %>ddd</p>
+          <p class="card-text mb-0"><%= listing.category %></p>
+      </div>
+    </div>
+
+    <br>
+
+<!-- currUser store in local variable in app.js -->
+    <% if(currUser && currUser._id.equals(listing.owner._id)){ %>
+      <div class="btns mb-3">
+        <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark col-2 offset-2 edit-btn">Edit</a>
+        <form action="/listings/<%= listing._id %>/delete?_method=DELETE" method="POST">
+          <button class="btn btn-dark offset-4">Delete</button>
+        </form>
+      </div>
+    <% } %>
+
+    <!-- Review Form -->
+    <div class="col-8 offset-2 mb-3">
+  
+      <% if(currUser) { %>  
+        <hr>
+        <h1>Leave a Review</h1>
+        <form action="/listings/<%= listing.id %>/reviews" method="POST" novalidate class="needs-validation">
+          <div class="mb-3 mt-3">
+            <label for="rating" class="form-label">Rating</label>
+            <fieldset class="starability-slot">
+              <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+              <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+              <label for="first-rate1" title="Terrible">1 star</label>
+              <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+              <label for="first-rate2" title="Not good">2 stars</label>
+              <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+              <label for="first-rate3" title="Average">3 stars</label>
+              <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+              <label for="first-rate4" title="Very good">4 stars</label>
+              <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+              <label for="first-rate5" title="Amazing">5 stars</label>
+            </fieldset>
+          </div>
+
+          <div class="mb-3 mt-3">
+            <label for="comment" class="form-label">Comments</label>
+            <textarea name="review[comment]" id="comment" cols="30" rows="3" class="form-control" required></textarea>
+            <div class="invalid-feedback">Please enter comments for Your feedback</div>
+          </div>
+
+          <button class="btn btn-outline-dark">Submit</button>
+        </form>
+        <hr>
+      <% } %>
+
+      <% if(listing.reviews.length > 0){ %>
+        <div class="row">
+          <p><b>All Reviews</b></p>
+          <% for(review of listing.reviews) { %>
+            <div class="card col-5 ms-3 mb-3">
+              <div class="card-body">
+                <h5 class="card-title mb-2">@<%= review.author.username %></h5>
+                <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
+                <p class="card-text"><%= review.comment %></p>
+                <form class="mb-3" method="POST" action="/listings/<%=listing._id %>/reviews/<%=review._id%>?_method=DELETE">
+                  <button class="btn btn-sm btn-dark">Delete</button>
+                </form>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin="">
+</script>
+<div class ="col-8 offset-2 mb-3">
+  <h3><%= listing.title %></h3>
+<div id="map"></div>
+</div>
+
+
+<!-- this script use for specially for map -->
+
+<script>
+  //this data from creating a new listing and storing in the database
+  
+///check thois in console with listing.geometry.coordinates schema in models/listing.js
+ const coordinatesUse = <%= JSON.stringify(listing.geometry.coordinates) %>; //convert to string
+ 
+  const locationData = <%- JSON.stringify(listing.location) %>;
+  console.log("Location Data:", locationData);
+  console.log("Coordinates Data:", coordinatesUse);
+
+
+let [latitude, longitude] = coordinatesUse; // destructuring assignment from array
+  // Fixed coordinates (example: Nagpur)
+  const lat = longitude; //sometimes lat and lng are interchanged
+  const lng = latitude;
+
+  const map = L.map('map').setView([lat, lng], 13);
+
+  // Free OpenStreetMap tiles
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(map);
+
+  // Marker with popup
+  L.marker([lat, lng]).addTo(map)
+    .bindPopup(locationData)
+    .openPopup();
+</script>
+
+
+
+   
+
+</body>
+
