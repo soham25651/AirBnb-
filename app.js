@@ -22,6 +22,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 
 const  session = require("express-session");
+const MongoStore = require('connect-mongo');
 
 const flash = require("connect-flash");
 
@@ -49,7 +50,7 @@ main()
 }
 )
 .catch(err =>{
-     console.log(err);
+     console.log(err+" ehat is error");
 });
 
 
@@ -57,6 +58,8 @@ main()
 
 async function main() {
     await mongoose.connect(mongo_URL);
+
+ 
 }
 
 app.set("view engine" , "ejs");
@@ -66,20 +69,30 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname , "/public")));
 
+const store = MongoStore.create({
+  mongoUrl: mongo_URL,
+  touchAfter: 24 * 3600,
+
+});
+
+ store.on("error", (err) => console.log("Session Store Error:", err));
 const sessionOptions = {
-   secret : process.env.sessionOPTIONS_SECRET_CODE,
+     store : store,
+   secret: process.env.sessionOPTIONS_SECRET_CODE,
    resave : false,
   saveUninitialized : true,
    cookie :{
       expires : Date.now() + 7 * 24 * 60 * 60 * 1000,
       maxAge :  7 * 24 * 60 * 60 * 1000,
-      
+      httpOnly : true
  },
 
-}
+ }
 // app.get("/"  , (req , res)=>{
 //     res.send("HI I am working");
 // });
+
+//touch after -> Interval in seonds between session updates -> after refresh session not expire  
 
 
 app.use(session(sessionOptions));
@@ -139,6 +152,9 @@ app.use((req , res , next)=>{
 
 
 
+// DEBUG: Overriding send() to trace header errors
+
+
 
 
 app.use("/listings" , listingRouter);
@@ -155,19 +171,24 @@ app.use("/extra" , extraFeature);
 
 
 
-app.all(/.*/ ,(req , res , next)=>{
-   next(new ExpressError(404 , "Page NOT Found"));
-});
+// app.all(/.*/ ,(req , res , next)=>{
+//    next(new ExpressError(404 , "Page NOT Found"));
+// });
 
 //middlewaares 
-app.use((err, req , res , next)=>{
-   //if not write anything use 500  and Somethiing wrong
-    let {status = 500 , message="Something went wrong" } = err;
-    res.render("error.ejs" , {err});
-    //res.status(status).send(message);  
-});
+// app.use((err, req , res , next)=>{
+//    // //if not write anything use 500  and Somethiing wrong
+//    //  let {status = 500 , message="Something went wrong" } = err;
+//    // return res.render("error.ejs" , {err});
+//    //  //res.status(status).send(message);  
+
+//     const { status = 500, message = "Something went wrong" } = err;
+//   res.status(status);
+//   return res.render("error.ejs", { err });
+// });
 
 
 app.listen(8080 , ()=>{
   console.log("server is lestening to port 8080");   
 });
+

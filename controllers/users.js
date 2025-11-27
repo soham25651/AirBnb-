@@ -1,5 +1,5 @@
  const User = require("../models/user");
-module.exports.postsignUpform = async (req, res) => {
+module.exports.postsignUpform = async (req, res , next) => {
   //get from fill form 
   try {
     let { username, email, password } = req.body;
@@ -48,7 +48,7 @@ module.exports.postloginform= async (req, res) => {
     res.redirect(redirectURL); //after login go on same route you choose before login that button
   }
 
-  module.exports.logoutform = (req, res) => {
+  module.exports.logoutform = (req, res , next) => {
   req.logOut((err) => {
     if (err) {
       return next(err);
