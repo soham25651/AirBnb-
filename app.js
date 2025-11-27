@@ -11,7 +11,7 @@ if (process.env.NODE_ENV !== "production") {
 //console.log(process.env.SECRET);
 
 const express = require("express");
-
+const helmet = require("helmet");
 const app = express();
 const path = require("path");
 const mongoose = require("mongoose");
@@ -68,7 +68,7 @@ app.use(express.urlencoded({extended : true}));
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname , "/public")));
-
+app.use(helmet({ contentSecurityPolicy: false }));
 const store = MongoStore.create({
   mongoUrl: mongo_URL,
   touchAfter: 24 * 3600,
